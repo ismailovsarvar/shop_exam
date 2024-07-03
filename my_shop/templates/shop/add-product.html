@@ -1,29 +1,140 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <title>Add Product</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="{% static 'shop/assets/favicon.ico' %}"/>
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="{% static 'shop/css/styles.css' %}" rel="stylesheet"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Add Product - Dashboard HTML Template</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="{% static 'shop/css/fontawesome.min.css' %}" />
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="{% static 'shop/jquery-ui-datepicker/jquery-ui.min.css' %}" type="text/css" />
+    <!-- http://api.jqueryui.com/datepicker/ -->
+    <link rel="stylesheet" href="{% static 'shop/css/bootstrap.min.css' %}" />
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="{% static 'shop/css/templatemo-style.css' %}">
+    <!--
+        Product Admin CSS Template
+        https://templatemo.com/tm-524-product-admin
+        -->
 </head>
+
 <body>
-<section class="py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <h1 class="display-5 fw-bolder">Add Product</h1>
+    <!-- NAV -->
+    <nav class="navbar navbar-expand-xl">
+        <div class="container h-100">
+            <a class="navbar-brand" href="#">
+                <h1 class="tm-site-title mb-0">Product Admin</h1>
+            </a>
+            <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fas fa-bars tm-nav-icon"></i>
+            </button>
+        </div>
+    </nav>
+    <!-- END -->
+
+    <!-- ADD PRODUCT LIST -->
+    <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="tm-block-title d-inline-block">Add Product</h2>
+            </div>
+        </div>
         <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-primary" type="submit">Add Product</button>
+            <input type="hidden" name="csrfmiddlewaretoken"
+                value="mbFOM79m9kQ5rNCjAfwdzWqXywvEffoyfcP7keLTDckxZUWCiL3JVeYPpBsXszjP">
+            <div class="row tm-edit-product-row">
+                <div class="col-xl-6 col-lg-6 col-md-12">
+                    <form action="" class="tm-edit-product-form">
+                        <div class="form-group mb-3">
+                            <label for="name">Product Name
+                            </label>
+                            <input id="name" name="name" type="text" class="form-control validate" required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="description">Description</label>
+                            <textarea class="form-control validate" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_price">Price
+                            </label>
+                            <input id="id_price" name="price" type="number" class="form-control validate" required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_discount">Discount
+                            </label>
+                            <input id="id_discount" name="discount" type="number" class="form-control validate"
+                                required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_rating">Rating</label>
+                            <select class="custom-select tm-select-accounts" name="rating" id="id_rating">
+                                <option value="0" selected>Zero (0)</option>
+
+                                <option value="1">One (1)</option>
+
+                                <option value="2">Two (2)</option>
+
+                                <option value="3">Three (3)</option>
+
+                                <option value="4">Four (4)</option>
+
+                                <option value="5">Five (5)</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_quantity">Quantity
+                            </label>
+                            <input id="id_quantity" name="quantity" value="1" min="0" type="number"
+                                class="form-control validate" required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_slug">Slug:
+                            </label>
+                            <input id="id_slug" name="slug" type="text" maxlength="50" class="form-control validate"
+                                required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_on_sale">On sale:
+                            </label>
+                            <input id="id_on_sale" name="on_sale" type="checkbox" class="form-control validate"
+                                required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_category">Category:</label>
+                            <select class="custom-select tm-select-accounts" name="category" id="id_category">
+                                <option value="" selected>---------</option>
+
+                                <option value="1">Shoes</option>
+
+                                <option value="2">Clothing</option>
+
+                                <option value="3">Watches</option>
+
+                                <option value="4">Bags</option>
+                            </select>
+                        </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="id_image">Image:
+                    </label>
+                    <input id="id_image" name="image" type="file" class="form-control validate" accept="image/*" required />
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary btn-block text-uppercase" type="submit">Add Product Now</button>
+                </div>
+
+
         </form>
     </div>
-</section>
+    </form>
+    </div>
+    <!-- END PRODUCT LIST -->
 </body>
+
 </html>

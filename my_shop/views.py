@@ -1,19 +1,21 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from my_shop.forms import ProductModelForm, CommentModelForm, OrderModelForm
 from my_shop.models import Product, Category, Comment
 
 
 # Create your views here.
-
+@login_required(login_url='http://127.0.0.1:8000/admin/login/?next=/admin/')
 def shop_list(request, category_slug=None):
     categories = Category.objects.all()
     search_query = request.GET.get('search')
+    products = Product.objects.all()
+
     if search_query:
         products = Product.objects.filter(name__icontains=search_query)
-    else:
-        products = Product.objects.all()
+
     if category_slug:
         products = products.filter(category__slug=category_slug)
 
@@ -24,8 +26,6 @@ def shop_list(request, category_slug=None):
         products = products.order_by('price')
     elif filter_type == 'sale':
         products = Product.objects.filter(on_sale=True)
-    else:
-        products = Product.objects.all()
 
     context = {
         'products': products,

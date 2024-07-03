@@ -16,7 +16,8 @@ class ProductForm(forms.Form):
 class ProductModelForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('name', 'slug', 'description', 'price', 'discount', 'image', 'rating', 'on_sale')
+        # fields = ('name', 'slug', 'description', 'price', 'discount', 'image', 'rating', 'on_sale')
+        exclude = ()
 
 
 class OrderModelForm(forms.ModelForm):

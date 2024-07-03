@@ -72,10 +72,12 @@ def detail_list(request, slug):
 def add_product(request):
     form = ProductModelForm()
     if request.method == 'POST':
-        form = ProductModelForm(request.POST)
+        form = ProductModelForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('shop_list')
+
+    messages.success(request, 'Product has been added!')
 
     context = {
         'form': form,

@@ -70,14 +70,8 @@ class Comment(models.Model):
     email = models.EmailField()
     body = models.TextField()
     is_possible = models.BooleanField(default=False)
-    slug = models.SlugField(unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='comments')
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name) + '-1'
-        super(Comment, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

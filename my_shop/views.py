@@ -1,9 +1,9 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 
 from my_shop.forms import ProductModelForm, CommentModelForm, OrderModelForm
-from my_shop.models import Product, Category, Comment
+from my_shop.models import Product, Category
 
 
 # Create your views here.
@@ -37,34 +37,54 @@ def shop_list(request, category_slug=None):
 def detail_list(request, slug):
     product = Product.objects.get(slug=slug)
     product_r = Product.objects.filter(category=product.category).exclude(slug=product.slug)
-    comments = Comment.objects.filter(product__slug=slug)[0:3]
-    comment_form = CommentModelForm()
-    order_form = OrderModelForm()
-    new_comment = None
-    new_order = None
-
-    if request.method == 'POST':
-        comment_form = CommentModelForm(data=request.POST)
-        order_form = OrderModelForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.product = product
-            new_comment.save()
-
-        elif order_form.is_valid():
-            new_order = order_form.save(commit=False)
-            new_order.product = product
-            new_order.save()
-
-            messages.success(request, 'Your order has been submitted!')
-    context = {
+    comments = product.comments.filter(is_possible=True)
+    contex = {
         'product': product,
         'product_r': product_r,
-        'comments': comments,
-        'order_form': order_form,
-        'comment_form': comment_form,
-        'new_comment': new_comment,
-        'new_order': new_order
+        'comments': comments
+    }
+    return render(request, 'shop/detail.html', contex)
+
+
+def add_comment(request, product_slug):
+    product = get_object_or_404(Product, slug=product_slug)
+    if request.method == 'POST':
+        form = CommentModelForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+
+            comment.product = product
+            comment.save()
+            print('Save done!')
+            return redirect('detail_list', slug=product_slug)
+    else:
+        form = CommentModelForm(request.GET)
+        print('Get method running')
+
+    context = {
+        'form': form,
+        'product': product
+    }
+    return render(request, 'shop/detail.html', context)
+
+
+def add_order(request, product_slug):
+    product = get_object_or_404(Product, slug=product_slug)
+    if request.method == 'POST':
+        form = OrderModelForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.product = product
+            order.save()
+            print('Save done!')
+            return redirect('detail_list', slug=product_slug)
+    else:
+        form = OrderModelForm()
+        print('Get method running')
+
+    context = {
+        'form': form,
+        'product': product
     }
     return render(request, 'shop/detail.html', context)
 
